@@ -6,6 +6,14 @@
   "scripts": {
     "test": "tape test/*.js | faucet"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/staydecent/atom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/staydecent/atom/issues"
+  },
+  "homepage": "https://github.com/staydecent/atom#readme",
   "keywords": [
     "shared",
     "synchronous",
