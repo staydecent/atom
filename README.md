@@ -4,9 +4,6 @@ shared, synchronous, independent state for javascript apps.
 Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API
 without ES6 syntax and some of the top-level API exports.
 
-Using `atom` to manage application state results in an extremely easy to reason
-with flow of events. This is because `atom` does so little. Actually, it prevents you from doing too much as well. ;)
-
 ## Concepts
 
 1. You're application state is hidden within the `atom` function. It cannot be
