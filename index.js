@@ -10,7 +10,7 @@
   'use strict';
 
   return function(reducer, initialState) {
-    var subscribers = [];
+    var listeners = [];
     var state = initialState;
 
     return {
@@ -33,11 +33,11 @@
       }
     }
 
-    function subscribe(subscriber) {
-      if (typeof subscriber !== 'function') {
-        throw new E('subscriber must be a function');
+    function subscribe(listener) {
+      if (typeof listener !== 'function') {
+        throw new E('listener must be a function');
       }
-      subscribers.push(subscriber);
+      listeners.push(listener);
     }
 
     function getState() {
@@ -46,8 +46,8 @@
 
     function cb(newState) {
       state = newState;
-      for (var x=0; x < subscribers.length; x++) {
-        subscribers[x]();
+      for (var x=0; x < listeners.length; x++) {
+        listeners[x]();
       }
     }
 
