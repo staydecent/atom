@@ -25,6 +25,7 @@
   "dependencies": {},
   "devDependencies": {
     "browserify": "^11.0.1",
+    "es6-promise": "^3.0.2",
     "faucet": "0.0.1",
     "tape": "^4.0.3"
   }

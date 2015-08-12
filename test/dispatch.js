@@ -1,5 +1,6 @@
 var atom = require('../');
 var test = require('tape');
+var Promise = require('es6-promise').Promise; // for node 0.10.x
 
 var initialState = 0;
 var genericAction = {a:1};
