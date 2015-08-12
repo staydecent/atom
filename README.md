@@ -1,5 +1,8 @@
 # atom
-shared, synchronous, independent state for javascript apps.
+
+[![Build Status](https://travis-ci.org/staydecent/atom.svg?branch=master)](https://travis-ci.org/staydecent/atom) [![bitHound Score](https://www.bithound.io/github/staydecent/atom/badges/score.svg)](https://www.bithound.io/github/staydecent/atom)
+
+Shared, synchronous, independent state for javascript apps.
 
 Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API
 without ES6 syntax and some of the top-level API exports.
@@ -44,6 +47,9 @@ store.dispatch({ type: 'INCREMENT' }); // 2
 store.dispatch({ type: 'DECREMENT' }); // 1
 store.dispatch({ type: 'INCREMENT_ASYNC' }); // 2
 ```
+
+See also: [Simple Routing
+Example](https://github.com/staydecent/atom-routing-example)
 
 ## API
 
