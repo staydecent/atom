@@ -20,7 +20,7 @@
     };
 
     function dispatch(action) {
-      var newState = reducer(state, action);
+      var newState = reducer(action, state);
 
       if (newState === undefined) {
         throw new E('Reducer must return a value.');

@@ -63,3 +63,13 @@ test('dispatch should accept a returned function', function(t) {
   t.equal(initialState, store.getState());
 });
 
+test('dispatch should call reducer with (action, state)', function(t) {
+  t.plan(2);
+  var store = atom(function(action, state) {
+    t.equal(action, genericAction);
+    t.equal(state, initialState);
+    return state;
+  }, initialState);
+  store.dispatch(genericAction);
+});
+
