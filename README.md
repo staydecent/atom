@@ -19,7 +19,7 @@ without ES6 syntax and some of the top-level API exports.
 ## Example
 
 ```javascript
-function counter(state, action) {
+function counter(action, state) {
   switch (action.type) {
   case 'INCREMENT':
     return state + 1;
