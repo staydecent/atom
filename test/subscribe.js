@@ -1,12 +1,11 @@
+'use strict';
+
 var atom = require('../');
 var test = require('tape');
 
 var initialState = 0;
 var genericAction = {a:1};
 var returnTrue = function() { return true; };
-var returnUndef = function() { return undefined; };
-var returnProm = function() { return Promise.resolve(); };
-var returnFunc = function() { return function(){}; };
 
 
 test('subscribed listener should be called', function(t) {
@@ -49,4 +48,4 @@ test('subscribe should throw when listener not a function', function(t) {
   }
 
   t.ok(thrown);
-})
+});
