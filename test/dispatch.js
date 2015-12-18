@@ -3,11 +3,18 @@
 var atom = require('../');
 var test = require('tape');
 
+var Prom; // 0.10 support
+try {
+  Prom = Promise;
+} catch(err) {
+  Prom = require('es6-promise').Promise;
+}
+
 var initialState = 0;
 var genericAction = {a:1};
 var returnTrue = function() { return true; };
 var returnUndef = function() { return undefined; };
-var returnProm = function() { return Promise.resolve(); };
+var returnProm = function() { return Prom.resolve(); };
 var returnFunc = function() { return function(){}; };
 
 
