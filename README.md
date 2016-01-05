@@ -11,10 +11,10 @@ without ES6 syntax and some of the top-level API exports.
 
 1. You're application state is hidden within the `atom` function. It cannot be
    mutated outside of the atom function.
-2. To affect your state, you need to `trigger` an "action".
-3. "actions" can be just a string, or an object or any value you want.
+2. To affect your state, you need to `dispatch` an "action".
+3. An "action" can be just a string, or an object or any value you want.
 4. You define a single "reducer" function that accepts the current state and action and returns a new state.
-5. You can register any # of "subscribers" that are called after your reducer returns a new state.
+5. You can `subscribe` any # of "listeners" that are called after your reducer returns a new state.
 
 ## Example
 
@@ -55,17 +55,17 @@ Example](https://github.com/staydecent/atom-routing-example)
 
 ### atom(reducer[, initialState])
 
-Creates your atom `store` that contains your application state. Returns an Object with methods for interacting with your state.
+Creates your atom "store" that contains your application state. Returns an Object with methods for interacting with your state.
 
-#### reducer(state, action)
+#### reducer(action, state)
 
-A function that accepts `function(state, action)` and returns the potentially modified `state`. You can also return a function with the signature `function(dispatch)` for performing asynchronous tasks before modifying the state. When your async task completes, the passed in `dispatch` function can be called with an "action" that results your reducer returning a new state.
+A function that accepts `function(action, state)` and returns the potentially modified `state`. You can also return a function with the signature `function(dispatch)` for performing asynchronous tasks before modifying the state. When your async task completes, the passed in `dispatch` function can be called with an "action" that results your reducer returning a new state. The param order is the opposite of Redux to accomodate currying.
 
 ### Store API
 
 #### dispatch(action)
 
-This calls your "reducer" with the current state and the given "action".
+This calls your "reducer" with the given "action" and the current state.
 
 #### subscribe(listener)
 
