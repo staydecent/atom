@@ -48,8 +48,34 @@ store.dispatch({ type: 'DECREMENT' }); // 1
 store.dispatch({ type: 'INCREMENT_ASYNC' }); // 2
 ```
 
-See also: [Simple Routing
-Example](https://github.com/staydecent/atom-routing-example)
+### With React (or Preact, or similar)
+
+```javascript
+class Main extends Component {
+  constructor () {
+    super()
+    // Copy your entire atom state to this Main component.
+    this.state = store.getState()
+  }
+
+  componentDidMount () {
+    // Sync your atom state with this component's state
+    store.subscribe(() => this.setState(store.getState()))
+  }
+
+  render (_, state) {
+    // Pass the state object down to your child components as props
+    return (
+      <Child {...state}></Child>
+    )
+  }
+}
+```
+
+That's it! And within your child components you can call `store.dispatch` to update the atom state and have it sync to the `Main` component which will then pass the updated state object down to all of your child components!
+
+### See also
+[Simple Routing Example](https://github.com/staydecent/atom-routing-example)
 
 ## API
 
