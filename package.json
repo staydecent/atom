@@ -4,7 +4,7 @@
   "description": "shared, synchronous, independent state for javascript apps",
   "main": "index.js",
   "scripts": {
-    "pretest": "jshint index.js",
+    "pretest": "standard --verbose | snazzy",
     "test": "tape test/*.js | faucet"
   },
   "repository": {
@@ -25,10 +25,10 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "browserify": "^11.0.1",
     "es6-promise": "^3.0.2",
     "faucet": "0.0.1",
-    "jshint": "^2.8.0",
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.2",
     "tape": "^4.0.3"
   }
 }
