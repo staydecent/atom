@@ -19,33 +19,33 @@ without ES6 syntax and some of the top-level API exports.
 ## Example
 
 ```javascript
-function counter(action, state) {
+function counter (action, state) {
   switch (action.type) {
-  case 'INCREMENT':
-    return state + 1;
-  case 'DECREMENT':
-    return state - 1;
-  case 'INCREMENT_ASYNC':
-    return function(dispatch) {
-      setTimeout(function() {
-        dispatch({type: 'INCREMENT'});
-      }, 1000);
-    };
-  default:
-    return state;
+    case 'INCREMENT':
+      return state + 1
+    case 'DECREMENT':
+      return state - 1
+    case 'INCREMENT_ASYNC':
+      return function (dispatch) {
+        setTimeout(function () {
+          dispatch({type: 'INCREMENT'})
+        }, 1000)
+      }
+    default:
+      return state
   }
 }
 
-var store = atom(counter, 0);
+var store = atom(counter, 0)
 
-store.subscribe(function() {
+store.subscribe(function () {
   console.log(store.getState())
-});
+})
 
-store.dispatch({ type: 'INCREMENT' }); // 1
-store.dispatch({ type: 'INCREMENT' }); // 2
-store.dispatch({ type: 'DECREMENT' }); // 1
-store.dispatch({ type: 'INCREMENT_ASYNC' }); // 2
+store.dispatch({ type: 'INCREMENT' }) // 1
+store.dispatch({ type: 'INCREMENT' }) // 2
+store.dispatch({ type: 'DECREMENT' }) // 1
+store.dispatch({ type: 'INCREMENT_ASYNC' }) // 2
 ```
 
 ### With React (or Preact, or similar)
