@@ -25,8 +25,12 @@
       getState: getState
     }
 
-    function dispatch (action) {
-      var newState = callReducers(reducers, action, state)
+    function dispatch (/* action[, action1, action2, ...] */) {
+      var len = arguments.length
+      var newState = getState()
+      for (var x = 0; x < len; x++) {
+        newState = callReducers(reducers, arguments[x], newState)
+      }
       if (validState(newState)) {
         cb(newState)
       }
