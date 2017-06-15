@@ -4,8 +4,7 @@
 
 Shared, synchronous, independent state for JavaScript apps.
 
-Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API
-without ES6 syntax and some of the top-level API exports.
+Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API without ES6 syntax and some of the top-level API exports. `atom` also has no dependencies and is `~2 KB` unminified and uncompressed!
 
 ## Concepts
 
