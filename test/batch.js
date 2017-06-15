@@ -30,5 +30,5 @@ test('should be able to batch actions', function (t) {
     t.equal(store.getState(), 6)
   })
 
-  store.batch(addAction(1), multiplyAction(3), multiplyAction(2))
+  store.dispatch(addAction(1), multiplyAction(3), multiplyAction(2))
 })

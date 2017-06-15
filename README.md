@@ -12,8 +12,8 @@ Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API withou
    mutated outside of the atom function.
 2. To affect your state, you need to `dispatch` an "action".
 3. An "action" can be just a string, or an object or any value you want. Though, a [Flux Standard Action](https://github.com/acdlite/flux-standard-action) is recommended.
-4. You define a single "reducer" function that accepts the current state and action and returns a new state.
-5. You can `subscribe` any # of "listeners" that are called after your reducer returns a new state.
+4. You define one or more "reducer" functions that accept the current state and action and return a new state.
+5. You can `subscribe` any # of "listeners" that are called after your reducers return a new state.
 
 ## Example
 
@@ -78,9 +78,9 @@ That's it! And within your child components you can call `store.dispatch` to upd
 
 ## API
 
-### atom(reducer[, initialState])
+### atom(reducers[, initialState])
 
-Creates your atom "store" that contains your application state. Returns an Object with methods for interacting with your state.
+Creates your atom "store" that contains your application state. Returns an Object with methods for interacting with your state. You can pass an array of reducers as well. Each one will be called with the actions, and the returned state will be given to the next reducer in the array. That means the order of your reducers may be of importance!
 
 #### reducer(action, state)
 
@@ -88,9 +88,9 @@ A function that accepts `function(action, state)` and returns the potentially mo
 
 ### Store API
 
-#### dispatch(action)
+#### dispatch(action[, action1, action2, ...])
 
-This calls your "reducer" with the given "action" and the current state.
+This calls your "reducers" with the given "action" and the current state. Optionally, you can pass in as many actions as you want as aguments and they will be handled in the order given. Your "subscribed" listeners will not be called until all actions have been processed.
 
 #### subscribe(listener)
 
