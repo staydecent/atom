@@ -43,7 +43,11 @@
     }
 
     function getState () {
-      return state
+      return typeof state === 'object'
+        ? Object.hasOwnProperty('assign')
+          ? Object.assign({}, state)
+          : JSON.parse(JSON.stringify(state))
+        : state
     }
 
     function cb (newState) {
