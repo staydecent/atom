@@ -4,7 +4,7 @@
   "description": "shared, synchronous, independent state for javascript apps",
   "main": "index.js",
   "scripts": {
-    "pretest": "standard --verbose | snazzy",
+    "pretest": "standard --verbose | standard-tap | faucet",
     "test": "tape test/*.js | faucet"
   },
   "repository": {
@@ -27,8 +27,8 @@
   "devDependencies": {
     "es6-promise": "4.1.0",
     "faucet": "0.0.1",
-    "snazzy": "7.0.0",
     "standard": "9.0.2",
+    "standard-tap": "^1.0.1",
     "tape": "4.6.3"
   }
 }
