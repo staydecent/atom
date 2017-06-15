@@ -25,10 +25,10 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "es6-promise": "^3.0.2",
+    "es6-promise": "4.1.0",
     "faucet": "0.0.1",
-    "snazzy": "^7.0.0",
-    "standard": "^10.0.2",
-    "tape": "^4.0.3"
+    "snazzy": "7.0.0",
+    "standard": "9.0.2",
+    "tape": "4.6.3"
   }
 }
