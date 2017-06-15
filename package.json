@@ -27,7 +27,7 @@
   "devDependencies": {
     "es6-promise": "4.1.0",
     "faucet": "0.0.1",
-    "standard": "9.0.2",
+    "standard": "10.0.2",
     "standard-tap": "^1.0.1",
     "tape": "4.6.3"
   }
