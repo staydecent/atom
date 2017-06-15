@@ -11,7 +11,11 @@
 }(this, function () {
   'use strict'
 
-  return function (reducer, initialState) {
+  return function (reducers, initialState) {
+    if (typeof reducers === 'function') {
+      reducers = [reducers]
+    }
+    var len = reducers.length
     var listeners = []
     var state = initialState
 
@@ -22,7 +26,7 @@
     }
 
     function dispatch (action) {
-      var newState = reducer(action, state)
+      var newState = callReducers(reducers, action, state)
 
       if (newState === undefined) {
         throw new E('Reducer must return a value.')
@@ -48,6 +52,20 @@
           ? Object.assign({}, state)
           : JSON.parse(JSON.stringify(state))
         : state
+    }
+
+    // Private
+
+    function callReducers (fns, action, state) {
+      var newState = state
+      var ret
+      for (var x = 0; x < len; x++) {
+        ret = fns[x](action, newState)
+        if (typeof ret !== 'function') {
+          newState = ret
+        }
+      }
+      return newState
     }
 
     function cb (newState) {
