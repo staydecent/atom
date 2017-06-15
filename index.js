@@ -21,12 +21,24 @@
 
     return {
       dispatch: dispatch,
+      batch: batch,
       subscribe: subscribe,
       getState: getState
     }
 
     function dispatch (action) {
       var newState = callReducers(reducers, action, state)
+      if (validState(newState)) {
+        cb(newState)
+      }
+    }
+
+    function batch (/* actions */) {
+      var len = arguments.length
+      var newState = getState()
+      for (var x = 0; x < len; x++) {
+        newState = callReducers(reducers, arguments[x], newState)
+      }
       if (validState(newState)) {
         cb(newState)
       }
