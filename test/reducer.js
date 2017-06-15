@@ -33,3 +33,30 @@ test('atom should accept an array of reducers', function (t) {
 
   t.equal(store.getState(), '4')
 })
+
+test('atom should handle an async reducer', function (t) {
+  t.plan(1)
+
+  var calls = 0
+  var store = atom([
+    function (_, state) { return state + 1 },
+    function (_, state) {
+      return function (dispatch) {
+        if (calls) return
+        setTimeout(function () {
+          dispatch(genericAction)
+        }, 1000)
+      }
+    },
+    function (_, state) { return state + 1 }
+  ], 0)
+
+  store.subscribe(function () {
+    calls++
+    if (calls === 2) {
+      t.equal(store.getState(), 4)
+    }
+  })
+
+  store.dispatch(genericAction)
+})

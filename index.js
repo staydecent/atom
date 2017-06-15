@@ -27,14 +27,7 @@
 
     function dispatch (action) {
       var newState = callReducers(reducers, action, state)
-
-      if (newState === undefined) {
-        throw new E('Reducer must return a value.')
-      } else if (typeof newState.then === 'function') {
-        throw new E('Reducer cannot return a Promise.')
-      } else if (typeof newState === 'function') {
-        newState(dispatch)
-      } else {
+      if (validState(newState)) {
         cb(newState)
       }
     }
@@ -61,7 +54,7 @@
       var ret
       for (var x = 0; x < len; x++) {
         ret = fns[x](action, newState)
-        if (typeof ret !== 'function') {
+        if (validState(ret)) {
           newState = ret
         }
       }
@@ -72,6 +65,18 @@
       state = newState
       for (var x = 0; x < listeners.length; x++) {
         listeners[x]()
+      }
+    }
+
+    function validState (newState) {
+      if (newState === undefined) {
+        throw new E('Reducer must return a value.')
+      } else if (typeof newState.then === 'function') {
+        throw new E('Reducer cannot return a Promise.')
+      } else if (typeof newState === 'function') {
+        newState(dispatch)
+      } else {
+        return true
       }
     }
 
