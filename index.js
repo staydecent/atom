@@ -11,7 +11,11 @@
 }(this, function () {
   'use strict'
 
-  return function (reducer, initialState) {
+  return function (reducers, initialState) {
+    if (typeof reducers === 'function') {
+      reducers = [reducers]
+    }
+    var len = reducers.length
     var listeners = []
     var state = initialState
 
@@ -22,15 +26,8 @@
     }
 
     function dispatch (action) {
-      var newState = reducer(action, state)
-
-      if (newState === undefined) {
-        throw new E('Reducer must return a value.')
-      } else if (typeof newState.then === 'function') {
-        throw new E('Reducer cannot return a Promise.')
-      } else if (typeof newState === 'function') {
-        newState(dispatch)
-      } else {
+      var newState = callReducers(reducers, action, state)
+      if (validState(newState)) {
         cb(newState)
       }
     }
@@ -50,10 +47,36 @@
         : state
     }
 
+    // Private
+
+    function callReducers (fns, action, state) {
+      var newState = state
+      var ret
+      for (var x = 0; x < len; x++) {
+        ret = fns[x](action, newState)
+        if (validState(ret)) {
+          newState = ret
+        }
+      }
+      return newState
+    }
+
     function cb (newState) {
       state = newState
       for (var x = 0; x < listeners.length; x++) {
         listeners[x]()
+      }
+    }
+
+    function validState (newState) {
+      if (newState === undefined) {
+        throw new E('Reducer must return a value.')
+      } else if (typeof newState.then === 'function') {
+        throw new E('Reducer cannot return a Promise.')
+      } else if (typeof newState === 'function') {
+        newState(dispatch)
+      } else {
+        return true
       }
     }
 
