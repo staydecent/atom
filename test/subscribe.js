@@ -1,6 +1,6 @@
 'use strict'
 
-var atom = require('../')
+var atom = require('../bundle.js')
 var test = require('tape')
 
 var initialState = 0
@@ -47,4 +47,22 @@ test('subscribe should throw when listener not a function', function (t) {
   }
 
   t.ok(thrown)
+})
+
+test('should be able to unsubscribe', function (t) {
+  t.plan(2)
+
+  var calls = 0
+  var store = atom(returnTrue, initialState)
+  var listener = function () {
+    calls += 1
+  }
+
+  store.subscribe(listener)
+  store.dispatch(genericAction)
+  t.equal(1, calls)
+
+  store.unsubscribe(listener)
+  store.dispatch(genericAction)
+  t.equal(1, calls)
 })

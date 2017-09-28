@@ -1,6 +1,6 @@
 'use strict'
 
-var atom = require('../')
+var atom = require('../bundle.js')
 var test = require('tape')
 
 var addAction = function (n) {
