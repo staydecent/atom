@@ -24,7 +24,10 @@
   ],
   "author": "Adrian Unger",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "check-arg-types": "^1.1.0",
+    "wasmuth": "github:staydecent/wasmuth"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-transform-es2015-spread": "^6.22.0",

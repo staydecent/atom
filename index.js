@@ -1,14 +1,38 @@
-// Utils
-function pathSet (paths, valToSet, object) {
-  const copy = {...object}
-  paths.reduce((obj, prop, idx) => {
-    obj[prop] = obj[prop] || {}
-    if (paths.length === (idx + 1)) {
-      obj[prop] = valToSet
-    }
-    return obj[prop]
-  }, copy)
-  return copy
+import check from 'check-arg-types'
+import {path as pathGet, pathSet, merge} from 'wasmuth'
+
+const toType = check.prototype.toType
+
+// Default reducer
+function pathReducer (action, state) {
+  const type = action.type
+  const payload = action.payload
+  const {path} = payload
+
+  switch (type) {
+    case 'ATOM_SET':
+      return pathSet(path, payload.value, state)
+
+    case 'ATOM_UPDATE':
+      let {value} = payload
+      const currentValue = pathGet(path, state)
+      const newType = toType(value)
+
+      if (newType === toType(currentValue)) {
+        if (newType === 'array') {
+          return pathSet(path, currentValue.concat(value), state)
+        } else if (newType === 'object') {
+          return pathSet(path, merge(currentValue, value, state))
+        }
+      }
+      return pathSet(path, value, state)
+
+    case 'ATOM_REMOVE':
+      return pathSet(path, undefined, state)
+
+    default:
+      return state
+  }
 }
 
 export default function atom (reducers, initialState) {
@@ -28,7 +52,10 @@ export default function atom (reducers, initialState) {
     dispatch,
     subscribe,
     unsubscribe,
-    getState
+    getState,
+    set,
+    update,
+    remove
   }
 
   function dispatch (/* action[, action1, action2, ...] */) {
@@ -68,26 +95,19 @@ export default function atom (reducers, initialState) {
       : state
   }
 
-  // Private
-
-  function pathReducer (action, state) {
-    const type = action.type
-    const payload = action.payload
-    switch (type) {
-      case 'ATOM_SET':
-        let {path, value} = payload
-        return pathSet(path, value, state)
-
-      // case 'ATOM_UPDATE':
-      //   return atomUpdateReducer(payload, state)
-
-      // case 'ATOM_REMOVE':
-      //   return atomRemoveReducer(payload, state)
-
-      default:
-        return state
-    }
+  function set (path, value) {
+    return {type: 'ATOM_SET', payload: {path, value}}
   }
+
+  function update (path, value) {
+    return {type: 'ATOM_UPDATE', payload: {path, value}}
+  }
+
+  function remove (path) {
+    return {type: 'ATOM_REMOVE', payload: {path}}
+  }
+
+  // Private
 
   function callReducers (fns, action, state) {
     let newState = state
