@@ -34,6 +34,14 @@ test('atom should accept an array of reducers', function (t) {
   t.equal(store.getState(), '4')
 })
 
+test('atom should accept no reducers', function (t) {
+  t.plan(1)
+
+  var store = atom({a: 1})
+
+  t.ok(store.getState())
+})
+
 test('atom should handle an async reducer', function (t) {
   t.plan(1)
 

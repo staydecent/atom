@@ -12,9 +12,14 @@
   'use strict'
 
   return function (reducers, initialState) {
-    if (typeof reducers === 'function') {
+    if (reducers === undefined) {
+      initialState = reducers
+      reducers = []
+    } else if (typeof reducers === 'function') {
       reducers = [reducers]
     }
+    // reducers.push(pathReducer)
+
     var len = reducers.length
     var listeners = []
     var state = initialState
@@ -52,6 +57,24 @@
     }
 
     // Private
+
+    // function pathReducer = (action, state) {
+    //   var type = action.type
+    //   var payload = action.payload
+    //   switch (type) {
+    //     case 'ATOM_SET':
+    //       return atomSetReducer(payload, state)
+
+    //     case 'ATOM_UPDATE':
+    //       return atomUpdateReducer(payload, state)
+
+    //     case 'ATOM_REMOVE':
+    //       return atomRemoveReducer(payload, state)
+
+    //     default:
+    //       return state
+    //   }
+    // }
 
     function callReducers (fns, action, state) {
       var newState = state
