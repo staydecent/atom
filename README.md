@@ -4,8 +4,6 @@
 
 Shared, synchronous, independent state for JavaScript apps.
 
-Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API without ES6 syntax and some of the top-level API exports. `atom` also has no dependencies and is `~2 KB` unminified and uncompressed!
-
 ## Concepts
 
 1. You're application state is hidden within the `atom` function. It cannot be
@@ -14,6 +12,10 @@ Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API withou
 3. An "action" can be just a string, or an object or any value you want. Though, a [Flux Standard Action](https://github.com/acdlite/flux-standard-action) is recommended.
 4. You define one or more "reducer" functions that accept the current state and action and return a new state.
 5. You can `subscribe` any # of "listeners" that are called after your reducers return a new state.
+
+### Default Reducer
+
+`atom` comes with a default reducer to enable rapid development of your JavaScript apps. `pathReducer` provides `set`, `update`, `remove` actions and a corresponding reducer. See [API](#api) for details.
 
 ## Example
 
@@ -103,6 +105,17 @@ You can add as many listeners as you would like.
 Returns the current state. Useful for calling within a `subscribe`d listener.
 
 
+### Actions exposed on Store
+
+#### set(path, val)
+
+#### update(path, val)
+
+#### remove(path, val)
+
+
 ## Notes
 
 `getState` returns a copy of your state object. It does so using `Object.assign` if it's available, otherwise it falls back to `JSON.parse(JSON.stringify(state))`. When `getState` falls back to the `JSON.parse` method, this removes any functions attached to your state object. This should not be an issue, as you should not be storing functions on your state object anyway!
+
+Heavily inspired by [Redux](http://gaearon.github.io/redux/)!

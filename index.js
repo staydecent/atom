@@ -68,6 +68,7 @@ export default function atom (reducers, initialState) {
 
   const len = reducers.length
   const listeners = []
+  const cache = {}
   let state = initialState
 
   return {
@@ -91,11 +92,16 @@ export default function atom (reducers, initialState) {
     }
   }
 
-  function subscribe (listener) {
-    if (typeof listener !== 'function') {
-      throw new E('listener must be a function')
+  function subscribe (path, listener) {
+    if (arguments.length === 1) {
+      listener = path
+      if (typeof listener !== 'function') {
+        throw new E('listener must be a function')
+      }
+      listeners.push(listener)
+    } else if (arguments.length === 2) {
+      watchPath(path, listener)
     }
-    listeners.push(listener)
   }
 
   function unsubscribe (listener) {
@@ -110,10 +116,8 @@ export default function atom (reducers, initialState) {
   }
 
   function getState () {
-    return typeof state === 'object'
-      ? Object.hasOwnProperty('assign')
-        ? Object.assign({}, state)
-        : JSON.parse(JSON.stringify(state))
+    return toType(state) === 'object'
+      ? merge({}, state)
       : state
   }
 
@@ -148,6 +152,31 @@ export default function atom (reducers, initialState) {
     for (let x = 0; x < listeners.length; x++) {
       listeners[x]()
     }
+  }
+
+  function watchPath (path, cb) {
+    const key = path.join(',')
+    const getPathVal = pathGet(path)
+    const diff = () => {
+      const newVal = getPathVal(getState())
+      if (newVal === undefined) {
+        return
+      }
+      const oldVal = cache[key]
+      if (oldVal === undefined || oldVal !== newVal) {
+        if (toType(newVal) === 'object') {
+          cache[key] = merge({}, newVal)
+        } else {
+          cache[key] = newVal
+        }
+        cb(newVal, oldVal)
+      }
+    }
+
+    // Let's invoke diff right away as we may want to react to
+    // our initialState set in our store.
+    diff()
+    subscribe(diff)
   }
 
   function validState (newState) {
