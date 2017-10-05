@@ -1,13 +1,20 @@
 import check from 'check-arg-types'
-import {path as pathGet, pathSet, merge} from 'wasmuth'
 
 const toType = check.prototype.toType
 
 // Default reducer
 function pathReducer (action, state) {
   const type = action.type
+  if (!type ||
+    ['ATOM_SET', 'ATOM_UPDATE', 'ATOM_REMOVE'].indexOf(type) === -1) {
+    return state
+  }
   const payload = action.payload
-  const {path} = payload
+  let {path} = payload
+
+  if (toType(path) === 'string') {
+    path = [path]
+  }
 
   switch (type) {
     case 'ATOM_SET':
@@ -22,12 +29,27 @@ function pathReducer (action, state) {
         if (newType === 'array') {
           return pathSet(path, currentValue.concat(value), state)
         } else if (newType === 'object') {
-          return pathSet(path, merge(currentValue, value, state))
+          return pathSet(path, merge(currentValue, value), state)
         }
       }
       return pathSet(path, value, state)
 
     case 'ATOM_REMOVE':
+      const parent = pathGet(path.slice(0, -1), state)
+      const parentType = toType(parent)
+      if (parentType === 'object') {
+        return pathSet(
+          path.slice(0, -1),
+          without(path.slice(-1), parent),
+          state
+        )
+      } else if (parentType === 'array') {
+        const idx = last(path)
+        if (toType(idx) === 'number') {
+          parent.splice(idx, 1)
+          return pathSet(path.slice(0, -1), parent, state)
+        }
+      }
       return pathSet(path, undefined, state)
 
     default:
@@ -147,4 +169,71 @@ export default function atom (reducers, initialState) {
       return this.name + ': ' + this.message
     }
   }
+}
+
+// Util
+
+function merge () {
+  if (!arguments || !arguments.length) {
+    return
+  }
+  let result = {}
+  for (let x = 0; x < arguments.length; x++) {
+    if (toType(arguments[x]) !== 'object') {
+      throw new TypeError('All arguments must be objects')
+    }
+    result = {
+      ...result,
+      ...arguments[x]
+    }
+  }
+  return result
+}
+
+function pathGet (paths, obj) {
+  check(arguments, ['array', ['array', 'object']])
+  let val = obj
+  for (let x = 0; x < paths.length; x++) {
+    if (val == null) {
+      return
+    }
+    val = val[paths[x]]
+  }
+  return val
+}
+
+function pathSet (paths, valToSet, object) {
+  check(arguments, ['array', '-any', 'object'])
+  const copy = merge({}, object)
+  paths.reduce(function (obj, prop, idx) {
+    obj[prop] = obj[prop] || {}
+    if (paths.length === (idx + 1)) {
+      obj[prop] = valToSet
+    }
+    return obj[prop]
+  }, copy)
+  return copy
+}
+
+function pick (keys, obj) {
+  check(arguments, ['array', 'object'])
+  const result = {}
+  for (let x = 0; x < keys.length; x++) {
+    let k = keys[x]
+    if (obj[k]) {
+      result[k] = obj[k]
+    }
+  }
+  return result
+}
+
+function without (keys, obj) {
+  const keep = Object.keys(obj).filter((k) => keys.indexOf(k) === -1)
+  return pick(keep, obj)
+}
+
+function last (ls) {
+  check([arguments[0]], ['array'])
+  const n = ls.length ? ls.length - 1 : 0
+  return ls[n]
 }

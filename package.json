@@ -25,8 +25,7 @@
   "author": "Adrian Unger",
   "license": "ISC",
   "dependencies": {
-    "check-arg-types": "^1.1.0",
-    "wasmuth": "github:staydecent/wasmuth"
+    "check-arg-types": "^1.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
