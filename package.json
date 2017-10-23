@@ -24,8 +24,8 @@
   ],
   "author": "Adrian Unger",
   "license": "ISC",
-  "dependencies": {
-    "check-arg-types": "^1.1.0"
+  "peerDependencies": {
+    "check-arg-types": "1.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
