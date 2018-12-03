@@ -20,9 +20,19 @@
     var state = initialState
 
     return {
+      addReducer: addReducer,
       dispatch: dispatch,
       subscribe: subscribe,
-      getState: getState
+      unsubscribe: unsubscribe,
+      getState: getState,
+      setState: setState
+    }
+
+    function addReducer (reducer) {
+      if (typeof reducer !== 'function') {
+        throw new E('reducer must be a function')
+      }
+      reducers.push(reducer)
     }
 
     function dispatch (/* action[, action1, action2, ...] */) {
@@ -41,6 +51,13 @@
         throw new E('listener must be a function')
       }
       listeners.push(listener)
+      return function () { unsubscribe(listener) }
+    }
+
+    function unsubscribe (listener) {
+      if (!listener) return
+      const idx = listeners.findIndex(l => l === listener)
+      idx > -1 && listeners.splice(idx, 1)
     }
 
     function getState () {
@@ -49,6 +66,11 @@
           ? Object.assign({}, state)
           : JSON.parse(JSON.stringify(state))
         : state
+    }
+
+    function setState (newState) {
+      if (!validState(newState)) return
+      state = newState
     }
 
     // Private
