@@ -68,9 +68,9 @@
     }
 
     function setState (newState) {
-      if (!validState(newState)) return
-      state = newState
-      cb(newState)
+      if (validState(newState)) {
+        cb(Object.assign({}, state, newState))
+      }
     }
 
     // Private
