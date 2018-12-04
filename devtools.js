@@ -21,9 +21,8 @@ module.exports = function atomDevTools (store) {
     store.devtools.init(store.getState())
 
     store.addReducer(function devtoolsReducer (action, state) {
-      var actionName = (action && action.type) || 'setState'
       if (!ignoreState) {
-        store.devtools.send(actionName, state)
+        store.devtools.send(action, state)
       } else {
         ignoreState = false
       }

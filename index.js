@@ -15,7 +15,6 @@
     if (typeof reducers === 'function') {
       reducers = [reducers]
     }
-    var len = reducers.length
     var listeners = []
     var state = initialState
 
@@ -77,6 +76,7 @@
 
     function callReducers (fns, action, state) {
       var newState = state
+      var len = reducers.length
       var ret
       for (var x = 0; x < len; x++) {
         ret = fns[x](action, newState)
