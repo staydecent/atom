@@ -70,6 +70,7 @@
     function setState (newState) {
       if (!validState(newState)) return
       state = newState
+      cb(newState)
     }
 
     // Private
