@@ -1,6 +1,6 @@
 {
   "name": "atom",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "shared, synchronous, independent state for javascript apps",
   "main": "index.js",
   "scripts": {
