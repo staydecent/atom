@@ -18,6 +18,12 @@
     var listeners = []
     var state = initialState
 
+    reducers.push(function setStateReducer (action, state) {
+      return action && action.type === '__ATOM_SET_STATE__'
+        ? Object.assign(state, action.payload)
+        : state
+    })
+
     return {
       addReducer: addReducer,
       dispatch: dispatch,
@@ -61,16 +67,12 @@
 
     function getState () {
       return typeof state === 'object'
-        ? Object.hasOwnProperty('assign')
-          ? Object.assign({}, state)
-          : JSON.parse(JSON.stringify(state))
+        ? Object.assign({}, state)
         : state
     }
 
     function setState (newState) {
-      if (validState(newState)) {
-        cb(Object.assign({}, state, newState))
-      }
+      dispatch({type: '__ATOM_SET_STATE__', payload: newState})
     }
 
     // Private
