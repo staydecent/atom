@@ -1,10 +1,10 @@
 # atom
 
-[![Build Status](https://travis-ci.org/staydecent/atom.svg?branch=master)](https://travis-ci.org/staydecent/atom) [![bitHound Score](https://www.bithound.io/github/staydecent/atom/badges/score.svg)](https://www.bithound.io/github/staydecent/atom)
+[![Build Status](https://travis-ci.org/staydecent/atom.svg?branch=master)](https://travis-ci.org/staydecent/atom) [![Known Vulnerabilities](https://snyk.io/test/github/staydecent/atom/badge.svg)](https://snyk.io/test/github/staydecent/atom) ![npm](https://img.shields.io/npm/dm/atom.svg)
 
 Shared, synchronous, independent state for JavaScript apps.
 
-Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API without ES6 syntax and some of the top-level API exports. `atom` also has no dependencies and is `~2 KB` unminified and uncompressed!
+Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API without ES6 syntax and some of the top-level API exports. `atom` also has no dependencies and is `~3 KB` unminified and uncompressed!
 
 ## Concepts
 
@@ -75,6 +75,8 @@ That's it! And within your child components you can call `store.dispatch` to upd
 
 ### See also
 [Simple Routing Example](https://github.com/staydecent/atom-routing-example)
+[WithState Component](https://github.com/inputlogic/elements/blob/master/components/with-state/index.js)
+[HoC that builds Actions and Reducers on the fly](https://github.com/inputlogic/elements/blob/master/components/connect/index.js#L39)
 
 ## API
 
@@ -96,13 +98,20 @@ This calls your "reducers" with the given "action" and the current state. Option
 
 Add a function to be called anytime after your "reducer" has returned a new state. This is useful for logging changes or syncing to your storage or database.
 
-You can add as many listeners as you would like.
+You can add as many listeners as you would like. Returns a function that when called will unsubscribe the listener.
+
+#### unsubcribe(listener)
+
+Remove the given listener so it's no longer called after state changes.
 
 #### getState()
 
 Returns the current state. Useful for calling within a `subscribe`d listener.
 
+#### setState(state)
 
-## Notes
+Calls a simple internal reducer that will merge the passed in state with the existing state.
 
-`getState` returns a copy of your state object. It does so using `Object.assign` if it's available, otherwise it falls back to `JSON.parse(JSON.stringify(state))`. When `getState` falls back to the `JSON.parse` method, this removes any functions attached to your state object. This should not be an issue, as you should not be storing functions on your state object anyway!
+#### addReducer(reducer)
+
+Add another reducer to your store, that will be called when an action is dispatched.
