@@ -75,7 +75,9 @@ That's it! And within your child components you can call `store.dispatch` to upd
 
 ### See also
 [Simple Routing Example](https://github.com/staydecent/atom-routing-example)
+
 [WithState Component](https://github.com/inputlogic/elements/blob/master/components/with-state/index.js)
+
 [HoC that builds Actions and Reducers on the fly](https://github.com/inputlogic/elements/blob/master/components/connect/index.js#L39)
 
 ## API
@@ -115,3 +117,19 @@ Calls a simple internal reducer that will merge the passed in state with the exi
 #### addReducer(reducer)
 
 Add another reducer to your store, that will be called when an action is dispatched.
+
+
+## Debugging with Redux Devtools
+
+Make sure to have [Redux devtools extension](https://github.com/zalmoxisus/redux-devtools-extension) installed.
+
+```js
+import atom from 'atom'
+import devtools from 'atom/devtools'
+
+const store = process.env.NODE_ENV === 'production' 
+  ? atom(reducers, initialState)
+  : devtools(atom(reducers, initialState))
+
+// ...
+```
