@@ -26,6 +26,7 @@
 
     return {
       addReducer: addReducer,
+      removeReducer: removeReducer,
       dispatch: dispatch,
       subscribe: subscribe,
       unsubscribe: unsubscribe,
@@ -38,6 +39,12 @@
         throw new E('reducer must be a function')
       }
       reducers.push(reducer)
+    }
+
+    function removeReducer (reducer) {
+      if (!reducer) return
+      const idx = reducers.findIndex(l => l === reducer)
+      idx > -1 && reducers.splice(idx, 1)
     }
 
     function dispatch (/* action[, action1, action2, ...] */) {
