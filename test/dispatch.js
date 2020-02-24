@@ -11,7 +11,7 @@ try {
 }
 
 var initialState = 0
-var genericAction = {a: 1}
+var genericAction = { a: 1 }
 var returnTrue = function () { return true }
 var returnUndef = function () { return undefined }
 var returnProm = function () { return Prom.resolve() }

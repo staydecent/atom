@@ -3,7 +3,7 @@
 var atom = require('../')
 var test = require('tape')
 
-var genericAction = {a: 1}
+var genericAction = { a: 1 }
 
 test('atom should accept a single reducer', function (t) {
   t.plan(1)
