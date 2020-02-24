@@ -78,8 +78,8 @@
         : state
     }
 
-    function setState (newState) {
-      dispatch({ type: '__ATOM_SET_STATE__', payload: newState })
+    function setState (newState, meta) {
+      dispatch({ type: '__ATOM_SET_STATE__', payload: newState, meta: meta })
     }
 
     // Private
