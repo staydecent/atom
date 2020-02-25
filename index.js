@@ -15,14 +15,36 @@
     if (typeof reducers === 'function') {
       reducers = [reducers]
     }
-    var len = reducers.length
     var listeners = []
     var state = initialState
 
+    reducers.push(function setStateReducer (action, state) {
+      return action && action.type === '__ATOM_SET_STATE__'
+        ? Object.assign(state, action.payload)
+        : state
+    })
+
     return {
+      addReducer: addReducer,
+      removeReducer: removeReducer,
       dispatch: dispatch,
       subscribe: subscribe,
-      getState: getState
+      unsubscribe: unsubscribe,
+      getState: getState,
+      setState: setState
+    }
+
+    function addReducer (reducer) {
+      if (typeof reducer !== 'function') {
+        throw new E('reducer must be a function')
+      }
+      reducers.push(reducer)
+    }
+
+    function removeReducer (reducer) {
+      if (!reducer) return
+      const idx = reducers.findIndex(l => l === reducer)
+      idx > -1 && reducers.splice(idx, 1)
     }
 
     function dispatch (/* action[, action1, action2, ...] */) {
@@ -41,20 +63,30 @@
         throw new E('listener must be a function')
       }
       listeners.push(listener)
+      return function () { unsubscribe(listener) }
+    }
+
+    function unsubscribe (listener) {
+      if (!listener) return
+      const idx = listeners.findIndex(l => l === listener)
+      idx > -1 && listeners.splice(idx, 1)
     }
 
     function getState () {
       return typeof state === 'object'
-        ? Object.hasOwnProperty('assign')
-          ? Object.assign({}, state)
-          : JSON.parse(JSON.stringify(state))
+        ? Object.assign({}, state)
         : state
+    }
+
+    function setState (newState, meta) {
+      dispatch({ type: '__ATOM_SET_STATE__', payload: newState, meta: meta })
     }
 
     // Private
 
     function callReducers (fns, action, state) {
       var newState = state
+      var len = reducers.length
       var ret
       for (var x = 0; x < len; x++) {
         ret = fns[x](action, newState)

@@ -4,11 +4,11 @@ var atom = require('../')
 var test = require('tape')
 
 var addAction = function (n) {
-  return {type: 'ADD', payload: n}
+  return { type: 'ADD', payload: n }
 }
 
 var multiplyAction = function (n) {
-  return {type: 'MULTIPLY', payload: n}
+  return { type: 'MULTIPLY', payload: n }
 }
 
 var addReducer = function (action, state) {

@@ -4,7 +4,7 @@ var atom = require('../')
 var test = require('tape')
 
 var initialState = 0
-var genericAction = {a: 1}
+var genericAction = { a: 1 }
 var returnTrue = function () { return true }
 
 test('subscribed listener should be called', function (t) {
