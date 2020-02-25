@@ -22,7 +22,14 @@ module.exports = function atomDevTools (store) {
 
     store.addReducer(function devtoolsReducer (action, state) {
       if (!ignoreState) {
-        store.devtools.send(action, state)
+        if (action.type === '__ATOM_SET_STATE__') {
+          store.devtools.send({
+            type: action.type + ' ' + Object.keys(action.payload),
+            payload: action.payload
+          }, state)
+        } else {
+          store.devtools.send(action, state)
+        }
       } else {
         ignoreState = false
       }
