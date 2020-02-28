@@ -1,5 +1,5 @@
 module.exports = function atomDevTools (store) {
-  var extension = window.__REDUX_DEVTOOLS_EXTENSION__ || window.top.__REDUX_DEVTOOLS_EXTENSION__
+  var extension = window.__REDUX_DEVTOOLS_EXTENSION__ || (window.top && window.top.__REDUX_DEVTOOLS_EXTENSION__)
   var ignoreState = false
 
   if (!extension) {
