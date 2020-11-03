@@ -15,6 +15,14 @@ Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API withou
 4. You define one or more "reducer" functions that accept the current state and action and return a new state.
 5. You can `subscribe` any # of "listeners" that are called after your reducers return a new state.
 
+### The main differences of `atom` from redux:
+
+1. atom comes with a built-in [setState](https://github.com/staydecent/atom#setstatestate) reducer for fast prototyping
+2. atom accepts an array of reducers without an [extra utility like redux](https://redux.js.org/api/combinereducers/)
+3. you can also [dispatch an array of actions](https://github.com/staydecent/atom#dispatchaction-action1-action2-) in a single batch
+4. "thunks" are [supported without middleware](https://github.com/staydecent/atom#reduceraction-state)
+5. There is no middleware! Middleware is considered dangerous as it introduces a layer in which actions could be mutated or state changes are less obvious
+
 ## Example
 
 ```javascript
@@ -73,12 +81,17 @@ class Main extends Component {
 
 That's it! And within your child components you can call `store.dispatch` to update the atom state and have it sync to the `Main` component which will then pass the updated state object down to all of your child components!
 
-### See also
+### See Also
+
 [Simple Routing Example](https://github.com/staydecent/atom-routing-example)
 
 [WithState Component](https://github.com/inputlogic/elements/blob/master/components/with-state/index.js)
 
 [HoC that builds Actions and Reducers on the fly](https://github.com/inputlogic/elements/blob/master/components/connect/index.js#L39)
+
+[useMappedState hook](https://github.com/inputlogic/elements/tree/master/components/use-mapped-state)
+
+[useStorePath hook](https://github.com/inputlogic/elements/tree/master/components/use-store-path)
 
 ## API
 
