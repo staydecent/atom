@@ -26,55 +26,53 @@ Basically re-implemented the [Redux](http://gaearon.github.io/redux/) API withou
 ## Example
 
 ```javascript
-function counter (action, state) {
+function counter(action, state) {
   switch (action.type) {
-    case 'INCREMENT':
-      return state + 1
-    case 'DECREMENT':
-      return state - 1
-    case 'INCREMENT_ASYNC':
+    case "INCREMENT":
+      return state + 1;
+    case "DECREMENT":
+      return state - 1;
+    case "INCREMENT_ASYNC":
       return function (dispatch) {
         setTimeout(function () {
-          dispatch({type: 'INCREMENT'})
-        }, 1000)
-      }
+          dispatch({ type: "INCREMENT" });
+        }, 1000);
+      };
     default:
-      return state
+      return state;
   }
 }
 
-var store = atom(counter, 0)
+var store = atom(counter, 0);
 
 store.subscribe(function () {
-  console.log(store.getState())
-})
+  console.log(store.getState());
+});
 
-store.dispatch({ type: 'INCREMENT' }) // 1
-store.dispatch({ type: 'INCREMENT' }) // 2
-store.dispatch({ type: 'DECREMENT' }) // 1
-store.dispatch({ type: 'INCREMENT_ASYNC' }) // 2
+store.dispatch({ type: "INCREMENT" }); // 1
+store.dispatch({ type: "INCREMENT" }); // 2
+store.dispatch({ type: "DECREMENT" }); // 1
+store.dispatch({ type: "INCREMENT_ASYNC" }); // 2
 ```
 
 ### With React (or Preact, or similar)
 
 ```javascript
 class Main extends Component {
-  constructor () {
-    super()
+  constructor() {
+    super();
     // Copy your entire atom state to this Main component.
-    this.state = store.getState()
+    this.state = store.getState();
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // Sync your atom state with this component's state
-    store.subscribe(() => this.setState(store.getState()))
+    store.subscribe(() => this.setState(store.getState()));
   }
 
-  render (_, state) {
+  render(_, state) {
     // Pass the state object down to your child components as props
-    return (
-      <Child {...state}></Child>
-    )
+    return <Child {...state}></Child>;
   }
 }
 ```
@@ -131,18 +129,18 @@ Calls a simple internal reducer that will merge the passed in state with the exi
 
 Add another reducer to your store, that will be called when an action is dispatched.
 
-
 ## Debugging with Redux Devtools
 
 Make sure to have [Redux devtools extension](https://github.com/zalmoxisus/redux-devtools-extension) installed.
 
 ```js
-import atom from 'atom'
-import devtools from 'atom/devtools'
+import atom from "atom";
+import devtools from "atom/devtools";
 
-const store = process.env.NODE_ENV === 'production' 
-  ? atom(reducers, initialState)
-  : devtools(atom(reducers, initialState))
+const store =
+  process.env.NODE_ENV === "production"
+    ? atom(reducers, initialState)
+    : devtools(atom(reducers, initialState));
 
 // ...
 ```
